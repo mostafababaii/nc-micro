@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  customer_service:
+    image: customer-service:latest
+    build:
+      context: ./customer
+    env_file:
+      - ./customer/.env
+    container_name: nc-customer-service
+    restart: unless-stopped
+    working_dir: /var/www/
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./customer:/var/www
+      - nc-customer-service-data:/var/www/storage
+    networks:
+      - app-network
+
+  product_service:
+    image: product-service:latest
+    build:
+      context: ./product
+    env_file:
+      - ./product/.env
+    container_name: nc-product-service
+    restart: unless-stopped
+    working_dir: /var/www/
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./product:/var/www
+      - nc-product-service-data:/var/www/storage
+    networks:
+      - app-network
+
+  order_service:
+    image: order-service:latest
+    build:
+      context: ./order
+    env_file:
+      - ./order/.env
+    container_name: nc-order-service
+    restart: unless-stopped
+    working_dir: /var/www/
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./order:/var/www
+      - nc-order-service-data:/var/www/storage
+    networks:
+      - app-network
+
+  redis_db:
+    image: redis:7.2.1-alpine
+    container_name: nc-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - nc-redis-data:/data
+    networks:
+      - app-network
+
+  postgres_db:
+    image: postgres:13.11-bullseye
+    container_name: nc-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - nc-postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  nc-product-service-data:
+  nc-customer-service-data:
+  nc-order-service-data:
+  nc-redis-data:
+  nc-postgres-data:
