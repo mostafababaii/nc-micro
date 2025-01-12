@@ -32,5 +32,5 @@ COPY . .
 RUN chown -R www-data:www-data /var/www/
 RUN chmod -R 777 /var/www/
 
-EXPOSE 8000
+EXPOSE 8002
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8002"]
