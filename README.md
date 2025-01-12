@@ -10,11 +10,11 @@ This project consists of three microservices: customer, product, and order. Each
 
 ## Project commands
 
-1. Build the projects: `make build`
-2. Start the projects: `make up`
+1. Build the services: `make build`
+2. Start the services: `make up`
 3. Create databases: `make setup`
 4. Run migrations: `make migrate`
-5. Stop the project: `make down`
+5. Stop the services: `make down`
 6. Seed the database with fake data: `make seed`
 7. Run tests: `make test`
 
